@@ -1,0 +1,37 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hyper news</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <h2>Hyper news</h2>
+    {% regroup data|dictsortreversed:"created" by created|slice:":10" as news_list %}
+    {% for created in news_list %}
+        <h4>{{ created.grouper }}</h4>
+        <ul>
+            {% for news in created.list %}
+            <li><a href="/news/{{ news.link }}/" style="padding-left:20px">{{ news.title }}</a></li>
+            {% endfor%}
+        </ul>
+    {% endfor %}
+    <a target="_blank" href="/news/">News</a>
+    <a target="_blank" href="/news/create/">Create news</a>
+    <form action="/news/" method="get">
+        {% csrf_token %}
+        <p>Search:</p>
+        <input type="text" name="q">
+        <p><input type="submit" value="Search a news"></p>
+    </form>
+</body>
+</html>
+
+
+
+
+
